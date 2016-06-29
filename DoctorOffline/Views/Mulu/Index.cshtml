@@ -1,0 +1,29 @@
+@using DoctorOffline.Entity;
+@using DoctorOffline.Models;
+@model MuluModel
+@{
+    ViewData["Title"] = "目录列表";
+    string name = ViewData["name"] == null ? "null" : ViewData["name"].ToString();
+    List<MuluModel> mm=(List<MuluModel>)ViewData["mm"];
+    List<OnlineMulu> ml = (List<OnlineMulu>)ViewData["mulus"];
+}
+<hl>目录列表:</hl>
+<ul>
+    @foreach(var item in mm)
+    {
+        <li><a href="/Mulu/MuluDetail?muluid=@item.mulu.Id">@item.mulu.Name</a></li>
+        if(@item.children!=null && @item.children.Count()>0){
+            <ul>
+                @foreach(var child in item.children){
+                    <li>@child.Name</li>
+                }
+            </ul>
+        }
+    }
+</ul>
+<br>
+<form asp-controller="Mulu" asp-action="AddMulu" method="post">
+    <input asp-for="MuluName" />
+    <input asp-for="Level" value="1" type="hidden"/>
+    <button type="submit">Register</button>
+</form>

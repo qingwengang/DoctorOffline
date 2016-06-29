@@ -1,0 +1,48 @@
+@using DoctorOffline.Models;
+@using DoctorOffline.Models;
+@model MuluModel
+@{
+    MuluModel mm=(MuluModel)ViewData["mm"];
+    int level = mm.mulu.Level + 1;
+}
+<h1>@mm.mulu.Name</h1>
+<ul>
+    @foreach(var child in mm.children){
+       <li><a href="/Mulu/MuluDetail?muluid=@child.Id">@child.Name</a></li>
+     }
+</ul>
+<br />
+
+<form asp-controller="Mulu" asp-action="AddMulu" method="post">
+    <input asp-for="MuluName" />
+    <input asp-for="Level" value="@level" type="hidden" />
+    <input asp-for="ParentId" value="@mm.mulu.Id" type="hidden"/>
+    <button type="submit">Register</button>
+</form>
+<br />
+<ul id="tree" class="filetree">
+    <li>
+        <span class="folder">系统管理</span>
+        <ul>
+            <li><span class="folder">部门管理</span></li>
+            <li>
+                <span class="folder">岗位管理</span>
+                <ul>
+                    <li><span class="folder">岗位添加</span></li>
+                    <li><span class="folder">岗位删除</span></li>
+                </ul>
+            </li>
+            <li>
+                <span class="folder">用户管理</span>
+                <ul>
+                    <li><span class="folder">添加用户</span></li>
+                    <li><span class="folder">修改用户</span></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li><span class="folder">审批流转</span></li>
+</ul>
+<script type="text/javascript">
+    $("#tree").treeview();
+</script>
