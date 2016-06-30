@@ -5,6 +5,12 @@
     MuluModel mm=(MuluModel)ViewData["mm"];
     int level = mm.mulu.Level + 1;
 }
+<link href="~/css/jquery.treeview.css" rel="stylesheet" />
+<link href="~/css/screen.css" rel="stylesheet" />
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="~/js/jquery.cookie.js"></script>
+<script src="~/js/jquery.treeview.js"></script>
+<script src="~/js/jquery.treeview.edit.js"></script>
 <h1>@mm.mulu.Name</h1>
 <ul>
     @foreach(var child in mm.children){

@@ -6,7 +6,7 @@ using DoctorOffline.Entity;
 using DoctorOffline.Models;
 using DoctorOffline.Service;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Text;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DoctorOffline.Controllers
@@ -16,11 +16,28 @@ namespace DoctorOffline.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<MuluModel> mms=new OnlineMuluService().getMuluModel();
             List<OnlineMulu> muluList = new OnlineMuluService().getMuluList();
             ViewData["mulus"]=muluList;
-            ViewData["mm"]=mms;
-            return View();
+            MuluModel model = new OnlineMuluService().getMuluModelById(0);
+            ViewData["html"] = GetHTML(model);
+            return View(model);
+        }
+        public String GetHTML(MuluModel model)
+        {
+            StringBuilder sbHtml = new StringBuilder();
+            sbHtml.Append("<li>");
+            sbHtml.AppendFormat("<span id='{0}' class='folder' onclick='AddClick({0},{1},\"{2}\");'>{3}</span>",model.MuluId,model.Level,model.MuluName,model.MuluName);
+            if(model.children!=null && model.children.Count > 0)
+            {
+                sbHtml.Append("<ul>");
+                foreach (var item in model.children)
+                {
+                    sbHtml.Append(GetHTML(item));
+                }
+                sbHtml.Append("</ul>");
+            }
+            sbHtml.Append("</li>");
+            return sbHtml.ToString();
         }
         public IActionResult AddMulu(MuluModel model){
             OnlineMulu mulu = new OnlineMulu();

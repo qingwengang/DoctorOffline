@@ -14,7 +14,8 @@ namespace DoctorOffline.Controllers
         {
             List<OnlineMulu> muluList = new OnlineMuluService().getMuluList();
             ViewData["mulus"]=muluList;
-            return View();
+            //return View();
+            return RedirectToAction("Index", "Mulu");
         }
 
         public IActionResult About()

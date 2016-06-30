@@ -1,0 +1,7 @@
+D:\github\DoctorOffline\UnitTestProject1\bin\Debug\UnitTestProject1.dll
+D:\github\DoctorOffline\UnitTestProject1\bin\Debug\UnitTestProject1.pdb
+D:\github\DoctorOffline\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\github\DoctorOffline\UnitTestProject1\bin\Debug\zh-Hans\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
+D:\github\DoctorOffline\UnitTestProject1\obj\Debug\UnitTestProject1.csprojResolveAssemblyReference.cache
+D:\github\DoctorOffline\UnitTestProject1\obj\Debug\UnitTestProject1.dll
+D:\github\DoctorOffline\UnitTestProject1\obj\Debug\UnitTestProject1.pdb

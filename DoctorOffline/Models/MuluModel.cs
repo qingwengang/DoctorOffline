@@ -11,9 +11,10 @@ namespace DoctorOffline.Models
         public int Level { get; set; }
         public long ParentId { get; set; }
         public OnlineMulu mulu { get; set; }
-        private List<OnlineMulu> childrens;
-        public List<OnlineMulu> children {
-            get { if (childrens == null) { childrens = new List<OnlineMulu>(); } return childrens; }
+        public long MuluId { get; set; }
+        private List<MuluModel> childrens;
+        public List<MuluModel> children {
+            get { if (childrens == null) { childrens = new List<MuluModel>(); } return childrens; }
             set { this.childrens = value; }
         }
     }

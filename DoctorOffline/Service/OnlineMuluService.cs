@@ -21,19 +21,25 @@ namespace DoctorOffline.Service
 
         public List<MuluModel> getMuluModel(){
             var muluModelList = new List<MuluModel>();
-            MySqlConnection con = new MySqlConnection("Data Source=127.0.0.1;Initial Catalog=doctor;Persist Security Info=True;User ID=root;Password=ganggang");
-            String sql = "select * from onlinemulu";
-            var muluList= con.Query<OnlineMulu>(sql).ToList<OnlineMulu>();
-            foreach (var item in muluList)
-            {
-                if(item.Level==1){
-                    MuluModel model=new MuluModel();
-                    model.mulu=item;
-                    model.children=muluList.Where(x=>x.ParentId==item.Id).ToList();
-                    muluModelList.Add(model);
-                }
-            }
+            //MySqlConnection con = new MySqlConnection("Data Source=127.0.0.1;Initial Catalog=doctor;Persist Security Info=True;User ID=root;Password=ganggang");
+            //String sql = "select * from onlinemulu";
+            //var muluList= con.Query<OnlineMulu>(sql).ToList<OnlineMulu>();
+            //foreach (var item in muluList)
+            //{
+            //    if(item.Level==1){
+            //        MuluModel model=new MuluModel();
+            //        model.mulu=item;
+            //        model.children=muluList.Where(x=>x.ParentId==item.Id).ToList();
+            //        muluModelList.Add(model);
+            //    }
+            //}
+            getMuluModelById(0);
             return muluModelList;
+        }
+        public MuluModel getMuluModelById(long muluId)
+        {
+            var mulus = GetAll();
+            return GetMuluModel(mulus, muluId);
         }
         public MuluModel getMuluDetail(long muluId){
             var muluModelList = new List<MuluModel>();
@@ -43,7 +49,7 @@ namespace DoctorOffline.Service
             if(muluList!=null && muluList.Count()>0){
                 MuluModel mm=new MuluModel();
                 mm.mulu=muluList.Where(x=>x.Id==muluId).FirstOrDefault();
-                mm.children=muluList.Where(x=>x.ParentId==muluId).ToList();
+                //mm.children=muluList.Where(x=>x.ParentId==muluId).ToList();
                 return mm;
             }
             return null;
@@ -57,6 +63,44 @@ namespace DoctorOffline.Service
         {
             MySqlConnection con = new MySqlConnection("Data Source=127.0.0.1;Initial Catalog=doctor;Persist Security Info=True;User ID=root;Password=ganggang");
             return con;
+        }
+        public List<OnlineMulu> GetAll()
+        {
+            MySqlConnection con = GetConnection();
+            String sql = "select * from onlinemulu";
+            var muluList = con.Query<OnlineMulu>(sql).ToList<OnlineMulu>();
+            return muluList;
+        }
+
+        public MuluModel GetMuluModel(List<OnlineMulu> muluList,long muluId)
+        {
+            MuluModel model = new MuluModel();
+            if (muluId == 0)
+            {
+                model.MuluName = "Root";
+                model.Level = 0;
+                model.ParentId = -1;
+                model.MuluId = 0;
+            }else
+            {
+                OnlineMulu mulu = muluList.Where(x => x.Id == muluId).FirstOrDefault();
+                model.MuluName = mulu.Name;
+                model.Level = mulu.Level;
+                model.ParentId = mulu.ParentId;
+                model.MuluId = muluId;
+            }
+            var children = muluList.Where(x => x.ParentId == muluId);
+            if (muluList.Where(x => x.ParentId == muluId).Count() > 0)
+            {
+                foreach(var item in children)
+                {
+                    model.children.Add(GetMuluModel(muluList, item.Id));
+                }
+            }else
+            {
+                model.children = null;
+            }
+            return model;
         }
     }
 }
