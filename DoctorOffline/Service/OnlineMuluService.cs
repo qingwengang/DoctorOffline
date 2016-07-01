@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 
 namespace DoctorOffline.Service
 {
-    public class OnlineMuluService
+    public class OnlineMuluService : BaseService
     {
         public List<OnlineMulu> getMuluList()
         {
@@ -21,18 +21,6 @@ namespace DoctorOffline.Service
 
         public List<MuluModel> getMuluModel(){
             var muluModelList = new List<MuluModel>();
-            //MySqlConnection con = new MySqlConnection("Data Source=127.0.0.1;Initial Catalog=doctor;Persist Security Info=True;User ID=root;Password=ganggang");
-            //String sql = "select * from onlinemulu";
-            //var muluList= con.Query<OnlineMulu>(sql).ToList<OnlineMulu>();
-            //foreach (var item in muluList)
-            //{
-            //    if(item.Level==1){
-            //        MuluModel model=new MuluModel();
-            //        model.mulu=item;
-            //        model.children=muluList.Where(x=>x.ParentId==item.Id).ToList();
-            //        muluModelList.Add(model);
-            //    }
-            //}
             getMuluModelById(0);
             return muluModelList;
         }
@@ -59,11 +47,7 @@ namespace DoctorOffline.Service
             MySqlConnection con = GetConnection();
             con.Execute(String.Format("insert into onlinemulu (name,level,parentid) VALUES('{0}',{1},{2})",mulu.Name,mulu.Level,mulu.ParentId));
         }
-        public MySqlConnection GetConnection()
-        {
-            MySqlConnection con = new MySqlConnection("Data Source=127.0.0.1;Initial Catalog=doctor;Persist Security Info=True;User ID=root;Password=ganggang");
-            return con;
-        }
+        
         public List<OnlineMulu> GetAll()
         {
             MySqlConnection con = GetConnection();

@@ -47,6 +47,7 @@ namespace DoctorOffline.Controllers
             new OnlineMuluService().AddMulu(mulu);
             return this.RedirectToAction("Index");
         }
+
         public IActionResult MuluDetail(long muluid)
         {
             MuluModel mm=new OnlineMuluService().getMuluDetail(muluid);
@@ -60,6 +61,44 @@ namespace DoctorOffline.Controllers
             }
             ViewData["mm"]=mm;
             return View();
+        }
+        public JsonResult EditRelation(long currentMuluId,string ask120Relation,string fhRelation,string JJRelation,string JKRelation,string SJRelation)
+        {
+            OnlineMuluRelation relation = new OnlineMuluRelation();
+            relation.OnlineMuluId = currentMuluId;
+            relation.Ask120Relation = ask120Relation;
+            relation.FHRelation = fhRelation;
+            relation.JJRelation = JJRelation;
+            relation.JKRelation = JKRelation;
+            relation.SJRelation = SJRelation;
+            new OnlineMuluRelationService().Save(relation);
+            return Json("success");
+        } 
+        public JsonResult GetRelation(long onlineMulu)
+        {
+            RelationModel model = new RelationModel();
+            var relList = new OnlineMuluRelationService().GetByOnlineMuluId(onlineMulu);
+            OnlineMuluRelation rel = null;
+            if(relList!=null && relList.Count > 0)
+            {
+                rel = relList.FirstOrDefault();
+            }
+            if (rel != null)
+            {
+                model.ask120Relation = rel.Ask120Relation;
+                model.fhRelation = rel.FHRelation;
+                model.JJRelation = rel.JJRelation;
+                model.JKRelation = rel.JKRelation;
+                model.SJRelation = rel.SJRelation;
+            }else
+            {
+                //model.ask120Relation = "";
+                //model.fhRelation = "";
+                //model.JJRelation = "";
+                //model.JKRelation = "";
+                //model.SJRelation = "";
+            }
+            return Json(model);
         }
     }
 }

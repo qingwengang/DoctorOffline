@@ -17,5 +17,14 @@ namespace DoctorOffline.Models
             get { if (childrens == null) { childrens = new List<MuluModel>(); } return childrens; }
             set { this.childrens = value; }
         }
+        public RelationModel relationModel { get; set; }
+    }
+    public class RelationModel
+    {
+        public string ask120Relation { get; set; }
+        public string fhRelation { get; set; }
+        public string JJRelation { get; set; }
+        public string JKRelation { get; set; }
+        public string SJRelation { get; set; }
     }
 }

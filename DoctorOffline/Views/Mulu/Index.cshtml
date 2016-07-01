@@ -32,9 +32,18 @@
     </form>
 </div>
 <div style="width:600px; height:auto; float:left; display:inline">
-    
-</div>
 
+    <ul>
+        <li>120ask:<input type="text" id="ask120Relation" /></li>
+        <li>fh:<input type="text" id="fhRelation" /></li>
+        <li>JJ:<input type="text" id="JJRelation" /></li>
+        <li>JK:<input type="text" id="JKRelation" /></li>
+        <li>SJ:<input type="text" id="SJRelation" /></li>
+        <button onclick="saveRelation()">保存</button>
+    </ul>
+
+</div>
+<input type="hidden" id="currentMuluId" />
 <script type="text/javascript">
     $("#tree").treeview({ collapsed: true });
     function AddClick(muluId, level, name) {
@@ -44,5 +53,48 @@
         $("#Level").val(iLevel);
         $(".folder").removeClass("selectedColor");
         $("#" + muluId).addClass("selectedColor");
+        $("#currentMuluId").val(iMuluId);
+        initRelation(muluId);
+    }
+    function initRelation(currentMuluId) {
+        $.ajax({
+            url: "/Mulu/GetRelation",
+            type: "GET",
+            dataType: "json",
+            data: { onlineMulu : currentMuluId},
+            success: function (data) {
+                $("#ask120Relation").val(data.ask120Relation);
+                $("#fhRelation").val(data.fhRelation);
+
+                $("#JJRelation").val(data.JJRelation);
+                $("#JKRelation").val(data.JKRelation);
+                $("#SJRelation").val(data.SJRelation);
+            }
+        })
+    }
+    function saveRelation() {
+        var ask120Relation = $("#ask120Relation").val();
+        var fhRelation = $("#fhRelation").val();
+
+        var JJRelation = $("#JJRelation").val();
+        var JKRelation = $("#JKRelation").val();
+        var SJRelation = $("#SJRelation").val();
+        var currentMuluid = $("#currentMuluId").val();
+        $.ajax({
+            url: "/Mulu/EditRelation",
+            type: "GET",
+            dataType: "json",
+            data: {
+                currentMuluId: currentMuluid,
+                ask120Relation: ask120Relation,
+                fhRelation: fhRelation,
+                JJRelation: JJRelation,
+                JKRelation: JKRelation,
+                SJRelation: SJRelation
+            },
+            success: function (data) {
+                alert(data);
+            }
+        })
     }
 </script>
